@@ -47,7 +47,7 @@ def add_score(request):
     ).first()
 
     if not current_session or not current_semester:
-        messages.error(request, "No active semester found.")
+        messages.error(request, "Активный семестр не найден.")
         return render(request, "result/add_score.html")
 
     # semester = Course.objects.filter(
@@ -199,7 +199,7 @@ def add_score_for(request, id):
             #     Result.objects.get_or_create(student=student.student, gpa=gpa,
             # semester=current_semester, level=student.student.level)
 
-        messages.success(request, "Successfully Recorded! ")
+        messages.success(request, "Успешно записано! ")
         return HttpResponseRedirect(reverse_lazy("add_score_for", kwargs={"id": id}))
     return HttpResponseRedirect(reverse_lazy("add_score_for", kwargs={"id": id}))
 
@@ -227,9 +227,9 @@ def grade_result(request):
     total_first_semester_credit = 0
     total_sec_semester_credit = 0
     for i in courses:
-        if i.course.semester == "First":
+        if i.course.semester == "Первый":
             total_first_semester_credit += int(i.course.credit)
-        if i.course.semester == "Second":
+        if i.course.semester == "Второй":
             total_sec_semester_credit += int(i.course.credit)
 
     previousCGPA = 0
@@ -479,7 +479,7 @@ def course_registration_form(request):
     normal.fontName = "Helvetica"
     normal.fontSize = 12
     normal.leading = 18
-    title = "<b>EZOD UNIVERSITY OF TECHNOLOGY, ADAMA</b>"  # TODO: Make this dynamic
+    title = "<b>Makeblock Education</b>"  # TODO: Make this dynamic
     title = Paragraph(title.upper(), normal)
     Story.append(title)
     style = getSampleStyleSheet()
@@ -490,7 +490,7 @@ def course_registration_form(request):
     school.fontSize = 10
     school.leading = 18
     school_title = (
-        "<b>SCHOOL OF ELECTRICAL ENGINEERING & COMPUTING</b>"  # TODO: Make this dynamic
+        "<b>SMART GENERATION</b>"  # TODO: Make this dynamic
     )
     school_title = Paragraph(school_title.upper(), school)
     Story.append(school_title)
@@ -503,13 +503,13 @@ def course_registration_form(request):
     department.fontSize = 9
     department.leading = 18
     department_title = (
-        "<b>DEPARTMENT OF COMPUTER SCIENCE & ENGINEERING</b>"  # TODO: Make this dynamic
+        "<b>Министерство просвещения Республики Казахстан</b>"  # TODO: Make this dynamic
     )
     department_title = Paragraph(department_title, department)
     Story.append(department_title)
     Story.append(Spacer(1, 0.3 * inch))
 
-    title = "<b><u>STUDENT COURSE REGISTRATION FORM</u></b>"
+    title = "<b><u>ФОРМА РЕГИСТРАЦИИ СТУДЕНЧЕСКОГО КУРСА</u></b>"
     title = Paragraph(title.upper(), normal)
     Story.append(title)
     student = Student.objects.get(student__pk=request.user.id)
@@ -518,22 +518,22 @@ def course_registration_form(request):
     tbl_data = [
         [
             Paragraph(
-                "<b>Registration Number : " + request.user.username.upper() + "</b>",
+                "<b>Регистрационный номер : " + request.user.username.upper() + "</b>",
                 styles["Normal"],
             )
         ],
         [
             Paragraph(
-                "<b>Name : " + request.user.get_full_name.upper() + "</b>",
+                "<b>ФИО : " + request.user.get_full_name.upper() + "</b>",
                 styles["Normal"],
             )
         ],
         [
             Paragraph(
-                "<b>Session : " + current_session.session.upper() + "</b>",
+                "<b>Сессия : " + current_session.session.upper() + "</b>",
                 styles["Normal"],
             ),
-            Paragraph("<b>Level: " + student.level + "</b>", styles["Normal"]),
+            Paragraph("<b>Уровень: " + student.level + "</b>", styles["Normal"]),
         ],
     ]
     tbl = Table(tbl_data)
@@ -546,7 +546,7 @@ def course_registration_form(request):
     semester.fontName = "Helvetica"
     semester.fontSize = 9
     semester.leading = 18
-    semester_title = "<b>FIRST SEMESTER</b>"
+    semester_title = "<b>ПЕРВЫЙ СЕМЕСТР</b>"
     semester_title = Paragraph(semester_title, semester)
     Story.append(semester_title)
 
@@ -560,7 +560,7 @@ def course_registration_form(request):
             "Course Code",
             "Course Title",
             "Unit",
-            Paragraph("Name, Siganture of course lecturer & Date", style["Normal"]),
+            Paragraph("Имя, подпись лектора курса и дата", style["Normal"]),
         )
     ]
     table_header = Table(header, 1 * [1.4 * inch], 1 * [0.5 * inch])

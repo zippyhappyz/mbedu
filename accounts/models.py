@@ -100,11 +100,11 @@ class User(AbstractUser):
     @property
     def get_user_role(self):
         if self.is_superuser:
-            role = "Admin"
+            role = "Администратор"
         elif self.is_student:
-            role = "Student"
+            role = "Студент"
         elif self.is_lecturer:
-            role = "Lecturer"
+            role = "Лектор"
         elif self.is_parent:
             role = "Parent"
 

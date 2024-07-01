@@ -4,12 +4,12 @@ from django.core.validators import FileExtensionValidator
 from django.contrib.auth.models import AbstractUser
 from django.db.models import Q
 
-NEWS = "News"
-EVENTS = "Event"
+NEWS = "Новости"
+EVENTS = "События"
 
 POST = (
-    (NEWS, "News"),
-    (EVENTS, "Event"),
+    (NEWS, "Новости"),
+    (EVENTS, "События"),
 )
 
 FIRST = "First"

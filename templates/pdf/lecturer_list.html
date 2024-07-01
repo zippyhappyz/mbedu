@@ -1,5 +1,14 @@
 {% block content %}
 <style>
+
+@font-face {
+            src: url('static/fonts/OpenSans-Regular.ttf') format('truetype');
+            font-family: "Open Sans", sans-serif;
+        }
+        body {
+            font-family: 'Open Sans';
+        }
+
   .table {
     width: 100%;
     border-collapse: collapse;
@@ -31,18 +40,18 @@
 
 </style>
 
-<p class="title-1">Lecturers</p>
+<p class="title-1">Лекторы</p>
 
 <div>
   <table class="table">
     <thead>
       <tr>
         <th>#</th>
-        <th>ID No.</th>
-        <th>Full Name</th>
+        <th>ID</th>
+        <th>Полное имя</th>
         <th>Email</th>
-        <th>Mob No.</th>
-        <th>Address/City</th>
+        <th>Номер телефона</th>
+        <th>Адрес</th>
       </tr>
     </thead>
     <tbody>
@@ -59,7 +68,7 @@
       <tr>
         <td>
           <span class="text-danger">
-            No Lecturer(s).
+            Нет лекторов.
           </span>
         </td>
       </tr>

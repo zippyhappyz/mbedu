@@ -5,19 +5,19 @@
 
 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/">Home</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Lecturers</li>
+      <li class="breadcrumb-item"><a href="/">Главная</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Лекторы</li>
     </ol>
 </nav>
 
 {% if request.user.is_superuser %}
 <div class="manage-wrap">
-    <a class="btn btn-primary" href="{% url 'add_lecturer' %}"><i class="fas fa-plus"></i>Add Lecturer</a>
-    <a class="btn btn-primary" target="_blank" href="{% url 'lecturer_list_pdf' %}"><i class="fas fa-download"></i> Download pdf</a><!--new-->
+    <a class="btn btn-primary" href="{% url 'add_lecturer' %}"><i class="fas fa-plus"></i>Добавить лектора</a>
+    <a class="btn btn-primary" target="_blank" href="{% url 'lecturer_list_pdf' %}"><i class="fas fa-download"></i> Скачать в PDF</a><!--new-->
 </div>
 {% endif %}
 
-<p class="title-1"><i class="fas fa-chalkboard-teacher"></i>Lecturers</p>
+<p class="title-1"><i class="fas fa-chalkboard-teacher"></i>Лекторы</p>
 
 {% include 'snippets/messages.html' %}
 {% include 'snippets/filter_form.html' %}
@@ -27,14 +27,14 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th> ID No. </th>
-                <th> Full Name </th>
+                <th> Номер ID </th>
+                <th> Полное имя </th>
                 <th> Email </th>
-                <th> Mob No. </th>
-                <th> Address/city </th>
-                <th> Last login </th>
+                <th> Номер телефона </th>
+                <th> Адрес </th>
+                <th> Последний вход </th>
                 {% if request.user.is_superuser %}
-                <th> Action </th>
+                <th> Действия </th>
                 {% endif %}
             </tr>
         </thead>
@@ -55,9 +55,9 @@
                             <i class="fa fa-ellipsis-vertical"></i>
                         </button>
                         <ul class="dropdown-menu position-fixed">
-                          <li><a class="dropdown-item" href="{% url 'staff_edit' pk=lecturer.pk %}"><i class="fas fa-edit"></i> Update</a></li>
-                          <li><a class="dropdown-item"  target="_blank" href="{% url 'profile_single' lecturer.id %}?download_pdf=1"><i class="fas fa-download"></i> Download PDF</a></li>
-                          <li><a class="dropdown-item text-danger" href="{% url 'lecturer_delete' pk=lecturer.pk %}"><i class="fas fa-trash-alt"></i> Delete</a></li>
+                          <li><a class="dropdown-item" href="{% url 'staff_edit' pk=lecturer.pk %}"><i class="fas fa-edit"></i> Обновить</a></li>
+                          <li><a class="dropdown-item"  target="_blank" href="{% url 'profile_single' lecturer.id %}?download_pdf=1"><i class="fas fa-download"></i> Скачать в PDF</a></li>
+                          <li><a class="dropdown-item text-danger" href="{% url 'lecturer_delete' pk=lecturer.pk %}"><i class="fas fa-trash-alt"></i> Удалить</a></li>
                         </ul>
                       </div>
                 </td>
@@ -71,7 +71,7 @@
                     {% if request.user.is_superuser %}
                     <a href="{% url 'add_lecturer' %}">
                     <i class="primary" style="font-size: 22px;">
-                       Add Lecturer Now.
+                       Добавить лектора сейчас.
                     </i>
                     {% endif %}
                     </a>

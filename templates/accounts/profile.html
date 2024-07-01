@@ -10,7 +10,7 @@
 
 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/">Home</a></li>
+      <li class="breadcrumb-item"><a href="/">Главная</a></li>
       <li class="breadcrumb-item active" aria-current="page">{{ user.get_full_name }}</li>
     </ol>
 </nav>
@@ -26,16 +26,16 @@
                 <ul class="px-2 list-unstyled">
                     <li>{{ user.get_full_name|title }}</li>
                     <li><strong>Last login: </strong>{{ user.last_login|date }}</li>
-                    <li><strong>Role: </strong>
+                    <li><strong>Роль: </strong>
                         {{ user.get_user_role }}
                     </li>
                 </ul>
             </div>
             <hr>
             <a class="mb-2" href="{% url 'edit_profile' %}"><i class="fas fa-user-edit"></i>
-                <span class="mobile-hide">Edit Profile</span></a>
+                <span class="mobile-hide">Редактировать профиль</span></a>
             <a href="{% url 'change_password' %}"><i class="fas fa-lock"></i><span class="mobile-hide">
-                    Change password</span></a>
+                    Изменить пароль</span></a>
         </div>
     </div>
 
@@ -58,7 +58,7 @@
                 {% endif %} -->
     
                 {% if user.is_lecturer %}
-                <p class="fw-bold"><i class="fas fa-book-open"></i> My Courses</p>
+                <p class="fw-bold"><i class="fas fa-book-open"></i> Мои курсы</p>
                 {% if courses %}
                 <ul>
                     {% for course in courses %}
@@ -66,42 +66,42 @@
                     {% endfor %}
                 </ul>
                 {% else %}
-                <div class="text-danger">No courses assigned!</div>
+                <div class="text-danger">Курсы не назначены!</div>
                 {% endif %}
                 <hr>
                 {% endif %}
     
-                <p class="fw-bold"><i class="fas fa-user"></i> Personal Info</p>
+                <p class="fw-bold"><i class="fas fa-user"></i> Персональная информация</p>
                 <div class="dashboard-description">
-                    <p><strong>First Name:</strong> {{ user.first_name|title }}</p>
-                    <p><strong>Last Name:</strong> {{ user.last_name|title }}</p>
+                    <p><strong>Имя:</strong> {{ user.first_name|title }}</p>
+                    <p><strong>Фамилия:</strong> {{ user.last_name|title }}</p>
                     <p><strong>ID No.:</strong> {{ user.username }}</p>
                 </div>
                 {% if user.is_student %}
                 <hr>
-                <p class="fw-bold"><i class="fas fa-graduation-cap"></i> Applicant Info</p>
+                <p class="fw-bold"><i class="fas fa-graduation-cap"></i> Информация о заявителя</p>
                 <div class="dashboard-description">
-                    <p><strong>School: </strong>Hawas Preparatory School</p>
-                    <p><strong>Level: </strong>{{ level.level }}</p>
+                    <p><strong>Школа: </strong>Hawas Preparatory School</p>
+                    <p><strong>Уровень: </strong>{{ level.level }}</p>
                 </div>
                 {% endif %}
     
                 <hr>
-                <p class="fw-bold"><i class="fas fa-phone-square-alt"></i> Contact Info</p>
+                <p class="fw-bold"><i class="fas fa-phone-square-alt"></i> Контактная информация</p>
                 <div class="dashboard-description">
                     <p><strong>Email:</strong> {{ user.email }}</p>
-                    <p><strong>Tel No.:</strong> {{ user.phone }}</p>
-                    <p><strong>Address/city:</strong> {{ user.address }}</p>
+                    <p><strong>Номер телефона:</strong> {{ user.phone }}</p>
+                    <p><strong>Адрес:</strong> {{ user.address }}</p>
                 </div>
     
                 <hr>
-                <p class="fw-bold"><i class="fa fa-calendar-day"></i> Important Dates</p>
+                <p class="fw-bold"><i class="fa fa-calendar-day"></i> Важные даты</p>
                 <div class="dashboard-description">
-                    <p><strong>Last login:</strong> {{ user.last_login }}</p>
+                    <p><strong>Последний вход:</strong> {{ user.last_login }}</p>
                     {% if current_semester and current_session %}
-                    <p><strong>Academic Year:</strong> {{ current_semester }} Semester {{ current_session }}</p>
+                    <p><strong>Учебный год:</strong> {{ current_semester }} Семестр {{ current_session }}</p>
                     {% endif %}
-                    <p><strong>Registered Date:</strong> {{ user.date_joined|date }}</p>
+                    <p><strong>Дата регистрации:</strong> {{ user.date_joined|date }}</p>
                 </div>
             </div>
         </div>

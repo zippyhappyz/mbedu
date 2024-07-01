@@ -5,8 +5,8 @@
 
 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
   <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/">Home</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Assesment Results</li>
+      <li class="breadcrumb-item"><a href="/">Главная</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Результаты оценки</li>
   </ol>
 </nav>
 
@@ -24,24 +24,24 @@
     {% endfor %}
 {% endif %}
 
-<div class="title-1"><i class="fa fa-spell-check"></i>Assesment Results</div>
+<div class="title-1"><i class="fa fa-spell-check"></i>Результаты оценки</div>
 <p>{{ student.level }} Result</p>
 
 <div class="table-responsive p-0 px-2 mt-3">
-  <div class="table-title"><u>First Semester:</u></div>
+  <div class="table-title"><u>Первый семестр:</u></div>
   <table class="table table-light">
     <thead>
       <tr>
         <th>#</th>
-        <th>Course Title</th>
-        <th>Course Code</th>
-        <th>Cr.Hr(s)</th>
-        <th>Assignment</th>
-        <th>Mid exam</th>
-        <th>Quiz</th>
-        <th>Attendance</th>
-        <th>Final exam</th>
-        <th>Total</th>
+        <th>Название курса</th>
+        <th>Код курса</th>
+        <th>Кредиты</th>
+        <th>Задание</th>
+        <th>Рубежный контроль</th>
+        <th>Квиз</th>
+        <th>Посещаемость</th>
+        <th>Финальный экзамен</th>
+        <th>Итого</th>
       </tr>
     </thead>
     {% for course in courses %}
@@ -70,20 +70,20 @@
   </div>
 
   <div class="table-responsive p-3 mt-3">
-    <div class="table-title"><u>Second Semester:</u></div>
+    <div class="table-title"><u>Второй семестр:</u></div>
     <table class="table table-light">
     <thead>
       <tr>
         <th>#</th>
-        <th>Course Title</th>
-        <th>Course Code</th>
-        <th>Cr.Hr(s)</th>
-        <th>Assignment</th>
-        <th>Mid exam</th>
-        <th>Quiz</th>
-        <th>Attendance</th>
-        <th>Final exam</th>
-        <th>Total</th>
+        <th>Название курса</th>
+        <th>Код курса</th>
+        <th>Кредиты</th>
+        <th>Задание</th>
+        <th>Рубежный контроль</th>
+        <th>Квиз</th>
+        <th>Посещаемость</th>
+        <th>Финальный экзамен</th>
+        <th>Итого</th>
       </tr>
     </thead>
     {% for course in courses %}

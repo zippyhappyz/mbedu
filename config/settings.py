@@ -155,7 +155,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "ru-ru"
 
 TIME_ZONE = "UTC"
 
@@ -249,7 +249,7 @@ LOGGING = {
 # WhiteNoise configuration
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-STUDENT_ID_PREFIX = config("STUDENT_ID_PREFIX", "ugr")
+STUDENT_ID_PREFIX = config("STUDENT_ID_PREFIX", "std")
 LECTURER_ID_PREFIX = config("LECTURER_ID_PREFIX", "lec")
 
 CACHES = {
@@ -259,7 +259,13 @@ CACHES = {
     }
 }
 
-# celery setting.
-CELERY_BROKER_URL = "redis://localhost:6379/0"
-CELERY_CACHE_BACKEND = "default"
+# Настройки Celery
+CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Пример для Redis
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'  # Пример для Redis
+
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TIMEZONE = 'UTC'
+
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True

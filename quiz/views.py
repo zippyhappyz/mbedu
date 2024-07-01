@@ -90,7 +90,7 @@ def quiz_delete(request, slug, pk):
     quiz = Quiz.objects.get(pk=pk)
     course = Course.objects.get(slug=slug)
     quiz.delete()
-    messages.success(request, f"successfuly deleted.")
+    messages.success(request, f"успешно удалено.")
     return redirect("quiz_index", quiz.course.slug)
 
 
@@ -248,7 +248,7 @@ class QuizTake(FormView):
         course = get_object_or_404(Course, pk=self.kwargs["pk"])
 
         if quizQuestions <= 0:
-            messages.warning(request, f"Question set of the quiz is empty. try later!")
+            messages.warning(request, f"Набор вопросов викторины пуст. попробуй позже!")
             return redirect("quiz_index", self.course.slug)
 
         if self.quiz.draft and not request.user.has_perm("quiz.change_quiz"):
@@ -262,7 +262,7 @@ class QuizTake(FormView):
             # return render(request, self.single_complete_template_name)
             messages.info(
                 request,
-                f"You have already sat this exam and only one sitting is permitted",
+                f"Вы уже сдали этот экзамен, и разрешена только одна сдача.",
             )
             return redirect("quiz_index", self.course.slug)
 

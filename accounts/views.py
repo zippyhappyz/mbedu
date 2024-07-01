@@ -1,4 +1,5 @@
 from django.http.response import JsonResponse
+from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -20,6 +21,7 @@ from .filters import LecturerFilter, StudentFilter
 from django.http import HttpResponse
 from django.template.loader import get_template # to get template which render as pdf
 from xhtml2pdf import pisa
+from xhtml2pdf.files import pisaFileObject
 from django.template.loader import render_to_string #to render a template into a string
 
 def validate_username(request):
@@ -97,19 +99,32 @@ def profile(request):
         )
 
 #function that generate pdf by taking Django template and its context,
+def fetch_pdf_resources(uri, rel):
+    if uri.startswith(settings.MEDIA_URL):
+        path = os.path.join(settings.MEDIA_ROOT, uri.replace(settings.MEDIA_URL, ''))
+    elif uri.startswith(settings.STATIC_URL):
+        path = os.path.join(settings.STATIC_ROOT, uri.replace(settings.STATIC_URL, ''))
+    else:
+        path = uri  # This allows handling external URIs if needed
+
+    pisaFileObject.getNamedFile = lambda self: self.uri
+
+    return path
+
 def render_to_pdf(template_name, context):
-    """Renders a given template to PDF format."""
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'filename="profile.pdf"'  # Set default filename
+    response['Content-Disposition'] = 'filename="profile.pdf"'
 
     template = render_to_string(template_name, context)
-    pdf = pisa.CreatePDF(
+    pisa_status = pisa.CreatePDF(
         template,
-        dest=response
+        dest=response,
+        encoding='utf-8',
+        link_callback=fetch_pdf_resources
     )
-    if pdf.err:
-        return HttpResponse('We had some problems generating the PDF')
-    
+    if pisa_status.err:
+        return HttpResponse('We had some problems generating the PDF', status=400)
+
     return response
 
 

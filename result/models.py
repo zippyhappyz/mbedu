@@ -14,24 +14,24 @@ YEARS = (
     (4, "6"),
 )
 
-# LEVEL_COURSE = "Level course"
-BACHLOAR_DEGREE = "Bachloar"
-MASTER_DEGREE = "Master"
+# LEVEL_COURSE = "Уровень курса"
+BACHLOAR_DEGREE = "Бакалавр"
+MASTER_DEGREE = "Магистр"
 
 LEVEL = (
-    # (LEVEL_COURSE, "Level course"),
-    (BACHLOAR_DEGREE, "Bachloar Degree"),
-    (MASTER_DEGREE, "Master Degree"),
+    # (LEVEL_COURSE, "Уровень курса"),
+    (BACHLOAR_DEGREE, "Степень бакалавра"),
+    (MASTER_DEGREE, "Степень магистра"),
 )
 
-FIRST = "First"
-SECOND = "Second"
-THIRD = "Third"
+FIRST = "Первый"
+SECOND = "Второй"
+THIRD = "Третий"
 
 SEMESTER = (
-    (FIRST, "First"),
-    (SECOND, "Second"),
-    (THIRD, "Third"),
+    (FIRST, "Первый"),
+    (SECOND, "Второй"),
+    (THIRD, "Третий"),
 )
 
 A_PLUS = "A+"
@@ -62,14 +62,13 @@ GRADE = (
     (NG, "NG"),
 )
 
-PASS = "PASS"
-FAIL = "FAIL"
+PASS = "ПРОЙТИ"
+FAIL = "НЕУД"
 
 COMMENT = (
-    (PASS, "PASS"),
-    (FAIL, "FAIL"),
+    (PASS, "ПРОЙТИ"),
+    (FAIL, "НЕУД"),
 )
-
 
 class TakenCourseManager(models.Manager):
     def new(self, user=None):

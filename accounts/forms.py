@@ -18,7 +18,7 @@ class StaffAddForm(UserCreationForm):
                 "class": "form-control",
             }
         ),
-        label="Username",
+        label="Имя пользователя",
         required=False,
     )
 
@@ -30,7 +30,7 @@ class StaffAddForm(UserCreationForm):
                 "class": "form-control",
             }
         ),
-        label="First Name",
+        label="Имя",
     )
 
     last_name = forms.CharField(
@@ -41,7 +41,7 @@ class StaffAddForm(UserCreationForm):
                 "class": "form-control",
             }
         ),
-        label="Last Name",
+        label="Фамилия",
     )
 
     address = forms.CharField(
@@ -52,7 +52,7 @@ class StaffAddForm(UserCreationForm):
                 "class": "form-control",
             }
         ),
-        label="Address",
+        label="Адрес",
     )
 
     phone = forms.CharField(
@@ -63,7 +63,7 @@ class StaffAddForm(UserCreationForm):
                 "class": "form-control",
             }
         ),
-        label="Mobile No.",
+        label="Номер телефона",
     )
 
     email = forms.CharField(
@@ -85,7 +85,7 @@ class StaffAddForm(UserCreationForm):
                 "class": "form-control",
             }
         ),
-        label="Password",
+        label="Пароль",
         required=False,
     )
 
@@ -97,7 +97,7 @@ class StaffAddForm(UserCreationForm):
                 "class": "form-control",
             }
         ),
-        label="Password Confirmation",
+        label="Подтверждение пароля",
         required=False,
     )
 
@@ -126,7 +126,7 @@ class StudentAddForm(UserCreationForm):
         widget=forms.TextInput(
             attrs={"type": "text", "class": "form-control", "id": "username_id"}
         ),
-        label="Username",
+        label="Имя пользователя",
         required=False,
     )
     address = forms.CharField(
@@ -137,7 +137,7 @@ class StudentAddForm(UserCreationForm):
                 "class": "form-control",
             }
         ),
-        label="Address",
+        label="Адрес",
     )
 
     phone = forms.CharField(
@@ -148,7 +148,7 @@ class StudentAddForm(UserCreationForm):
                 "class": "form-control",
             }
         ),
-        label="Mobile No.",
+        label="Номер телефона",
     )
 
     first_name = forms.CharField(
@@ -159,7 +159,7 @@ class StudentAddForm(UserCreationForm):
                 "class": "form-control",
             }
         ),
-        label="First name",
+        label="Имя",
     )
 
     last_name = forms.CharField(
@@ -170,7 +170,7 @@ class StudentAddForm(UserCreationForm):
                 "class": "form-control",
             }
         ),
-        label="Last name",
+        label="Фамилия",
     )
 
     gender = forms.CharField(
@@ -196,7 +196,7 @@ class StudentAddForm(UserCreationForm):
         widget=forms.Select(
             attrs={"class": "browser-default custom-select form-control"}
         ),
-        label="Program",
+        label="Программа",
     )
 
     email = forms.EmailField(
@@ -206,7 +206,7 @@ class StudentAddForm(UserCreationForm):
                 "class": "form-control",
             }
         ),
-        label="Email Address",
+        label="Email",
     )
 
     password1 = forms.CharField(
@@ -217,7 +217,7 @@ class StudentAddForm(UserCreationForm):
                 "class": "form-control",
             }
         ),
-        label="Password",
+        label="Пароль",
         required=False,
     )
 
@@ -229,14 +229,14 @@ class StudentAddForm(UserCreationForm):
                 "class": "form-control",
             }
         ),
-        label="Password Confirmation",
+        label="Подтверждение пароля",
         required=False,
     )
 
-    # def validate_email(self):
-    #     email = self.cleaned_data['email']
-    #     if User.objects.filter(email__iexact=email, is_active=True).exists():
-    #         raise forms.ValidationError("Email has taken, try another email address. ")
+    def validate_email(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(email__iexact=email, is_active=True).exists():
+            raise forms.ValidationError("Email has taken, try another email address. ")
 
     class Meta(UserCreationForm.Meta):
         model = User
@@ -272,7 +272,7 @@ class ProfileUpdateForm(UserChangeForm):
                 "class": "form-control",
             }
         ),
-        label="Email Address",
+        label="Email",
     )
 
     first_name = forms.CharField(
@@ -282,7 +282,7 @@ class ProfileUpdateForm(UserChangeForm):
                 "class": "form-control",
             }
         ),
-        label="First Name",
+        label="Имя",
     )
 
     last_name = forms.CharField(
@@ -292,7 +292,7 @@ class ProfileUpdateForm(UserChangeForm):
                 "class": "form-control",
             }
         ),
-        label="Last Name",
+        label="Фамилия",
     )
 
     gender = forms.CharField(
@@ -311,7 +311,7 @@ class ProfileUpdateForm(UserChangeForm):
                 "class": "form-control",
             }
         ),
-        label="Phone No.",
+        label="Номер телефона",
     )
 
     address = forms.CharField(
@@ -321,7 +321,7 @@ class ProfileUpdateForm(UserChangeForm):
                 "class": "form-control",
             }
         ),
-        label="Address / city",
+        label="Адрес, город",
     )
 
     class Meta:
@@ -355,7 +355,7 @@ class ParentAddForm(UserCreationForm):
                 "class": "form-control",
             }
         ),
-        label="Username",
+        label="Имя пользователя",
     )
     address = forms.CharField(
         max_length=30,
@@ -365,7 +365,7 @@ class ParentAddForm(UserCreationForm):
                 "class": "form-control",
             }
         ),
-        label="Address",
+        label="Адрес",
     )
 
     phone = forms.CharField(
@@ -387,7 +387,7 @@ class ParentAddForm(UserCreationForm):
                 "class": "form-control",
             }
         ),
-        label="First name",
+        label="Имя",
     )
 
     last_name = forms.CharField(
@@ -398,7 +398,7 @@ class ParentAddForm(UserCreationForm):
                 "class": "form-control",
             }
         ),
-        label="Last name",
+        label="Фамилия",
     )
 
     email = forms.EmailField(
@@ -408,7 +408,7 @@ class ParentAddForm(UserCreationForm):
                 "class": "form-control",
             }
         ),
-        label="Email Address",
+        label="Email",
     )
 
     student = forms.ModelChoiceField(
@@ -416,7 +416,7 @@ class ParentAddForm(UserCreationForm):
         widget=forms.Select(
             attrs={"class": "browser-default custom-select form-control"}
         ),
-        label="Student",
+        label="Студент",
     )
 
     relation_ship = forms.CharField(
@@ -436,7 +436,7 @@ class ParentAddForm(UserCreationForm):
                 "class": "form-control",
             }
         ),
-        label="Password",
+        label="Пароль",
     )
 
     password2 = forms.CharField(
@@ -447,13 +447,13 @@ class ParentAddForm(UserCreationForm):
                 "class": "form-control",
             }
         ),
-        label="Password Confirmation",
+        label="Подтверждение пароля",
     )
 
-    # def validate_email(self):
-    #     email = self.cleaned_data['email']
-    #     if User.objects.filter(email__iexact=email, is_active=True).exists():
-    #         raise forms.ValidationError("Email has taken, try another email address. ")
+    def validate_email(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(email__iexact=email, is_active=True).exists():
+            raise forms.ValidationError("Email has taken, try another email address. ")
 
     class Meta(UserCreationForm.Meta):
         model = User

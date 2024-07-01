@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import *
+from . import views
 
 
 urlpatterns = [
@@ -67,6 +68,7 @@ urlpatterns = [
         name="upload_video_delete",
     ),
     # course registration
+    path('update_settings/', views.update_settings, name='update_settings'),
     path("course/registration/", course_registration, name="course_registration"),
     path("course/drop/", course_drop, name="course_drop"),
     path("my_courses/", user_course_list, name="user_course_list"),

@@ -45,10 +45,10 @@ def post_add(request):
         if form.is_valid():
             form.save()
 
-            messages.success(request, (title + " has been uploaded."))
+            messages.success(request, (title + " был загружен"))
             return redirect("home")
         else:
-            messages.error(request, "Please correct the error(s) below.")
+            messages.error(request, "Пожалуйста, исправьте ошибку(и) ниже.")
     else:
         form = NewsAndEventsForm()
     return render(
@@ -71,10 +71,10 @@ def edit_post(request, pk):
         if form.is_valid():
             form.save()
 
-            messages.success(request, (title + " has been updated."))
+            messages.success(request, (title + " был обновлен"))
             return redirect("home")
         else:
-            messages.error(request, "Please correct the error(s) below.")
+            messages.error(request, "Пожалуйста, исправьте ошибку(и) ниже.")
     else:
         form = NewsAndEventsForm(instance=instance)
     return render(
@@ -93,7 +93,7 @@ def delete_post(request, pk):
     post = get_object_or_404(NewsAndEvents, pk=pk)
     title = post.title
     post.delete()
-    messages.success(request, (title + " has been deleted."))
+    messages.success(request, (title + " был удалён"))
     return redirect("home")
 
 
@@ -132,7 +132,7 @@ def session_add_view(request):
                     form.save()
             else:
                 form.save()
-            messages.success(request, "Session added successfully. ")
+            messages.success(request, "Сессия успешно добавлена ")
             return redirect("session_list")
 
     else:
@@ -158,13 +158,13 @@ def session_update_view(request, pk):
 
             if form.is_valid():
                 form.save()
-                messages.success(request, "Session updated successfully. ")
+                messages.success(request, "Сессия успешно обновлен. ")
                 return redirect("session_list")
         else:
             form = SessionForm(request.POST, instance=session)
             if form.is_valid():
                 form.save()
-                messages.success(request, "Session updated successfully. ")
+                messages.success(request, "Сессия успешно обновлен. ")
                 return redirect("session_list")
 
     else:
@@ -178,11 +178,11 @@ def session_delete_view(request, pk):
     session = get_object_or_404(Session, pk=pk)
 
     if session.is_current_session:
-        messages.error(request, "You cannot delete current session")
+        messages.error(request, "Вы не можете удалить текущую сессию!")
         return redirect("session_list")
     else:
         session.delete()
-        messages.success(request, "Session successfully deleted")
+        messages.success(request, "Сессия успешно удалена.")
     return redirect("session_list")
 
 
@@ -252,11 +252,11 @@ def semester_add_view(request):
                     set_session.is_current_session = True
                     set_session.save()
                     form.save()
-                    messages.success(request, "Semester added successfully.")
+                    messages.success(request, "Семестр добавлен успешно.")
                     return redirect("semester_list")
 
             form.save()
-            messages.success(request, "Semester added successfully. ")
+            messages.success(request, "Семестр добавлен успешно. ")
             return redirect("semester_list")
     else:
         form = SemesterForm()
@@ -284,7 +284,7 @@ def semester_update_view(request, pk):
                 set_session.is_current_session = True
                 set_session.save()
                 form.save()
-                messages.success(request, "Semester updated successfully !")
+                messages.success(request, "Семестр обновлен успешно !")
                 return redirect("semester_list")
         else:
             form = SemesterForm(request.POST, instance=semester)
@@ -302,9 +302,9 @@ def semester_update_view(request, pk):
 def semester_delete_view(request, pk):
     semester = get_object_or_404(Semester, pk=pk)
     if semester.is_current_semester:
-        messages.error(request, "You cannot delete current semester")
+        messages.error(request, "Семестр успешно удален.")
         return redirect("semester_list")
     else:
         semester.delete()
-        messages.success(request, "Semester successfully deleted")
+        messages.success(request, "Вы не можете удалить текущий семестр.")
     return redirect("semester_list")

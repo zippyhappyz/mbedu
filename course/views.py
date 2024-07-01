@@ -22,7 +22,11 @@ from .forms import (
     UploadFormVideo,
 )
 from .filters import ProgramFilter, CourseAllocationFilter
-from .models import Program, Course, CourseAllocation, Upload, UploadVideo
+from .models import Program, Course, CourseAllocation, Upload, UploadVideo, Settings
+
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 @method_decorator([login_required], name="dispatch")
@@ -44,11 +48,11 @@ def program_add(request):
         if form.is_valid():
             form.save()
             messages.success(
-                request, request.POST.get("title") + " program has been created."
+                request, request.POST.get("title") + " программа была создана."
             )
             return redirect("programs")
         else:
-            messages.error(request, "Correct the error(S) below.")
+            messages.error(request, "Исправьте ошибку(и) ниже.")
     else:
         form = ProgramForm()
 
@@ -56,7 +60,7 @@ def program_add(request):
         request,
         "course/program_add.html",
         {
-            "title": "Add Program",
+            "title": "Добавить программу",
             "form": form,
         },
     )
@@ -95,7 +99,7 @@ def program_edit(request, pk):
         if form.is_valid():
             form.save()
             messages.success(
-                request, str(request.POST.get("title")) + " program has been updated."
+                request, str(request.POST.get("title")) + " программа была обновлена."
             )
             return redirect("programs")
     else:
@@ -114,7 +118,7 @@ def program_delete(request, pk):
     program = Program.objects.get(pk=pk)
     title = program.title
     program.delete()
-    messages.success(request, "Program " + title + " has been deleted.")
+    messages.success(request, "Программа " + title + " была удалена.")
 
     return redirect("programs")
 
@@ -159,11 +163,11 @@ def course_add(request, pk):
         if form.is_valid():
             form.save()
             messages.success(
-                request, (course_name + "(" + course_code + ")" + " has been created.")
+                request, (course_name + "(" + course_code + ")" + " была создана.")
             )
             return redirect("program_detail", pk=request.POST.get("program"))
         else:
-            messages.error(request, "Correct the error(s) below.")
+            messages.error(request, "Исправьте ошибку(и) ниже.")
     else:
         form = CourseAddForm(initial={"program": Program.objects.get(pk=pk)})
 
@@ -190,11 +194,11 @@ def course_edit(request, slug):
         if form.is_valid():
             form.save()
             messages.success(
-                request, (course_name + "(" + course_code + ")" + " has been updated.")
+                request, (course_name + "(" + course_code + ")" + " была обновлена.")
             )
             return redirect("program_detail", pk=request.POST.get("program"))
         else:
-            messages.error(request, "Correct the error(s) below.")
+            messages.error(request, "Исправьте ошибку(и) ниже.")
     else:
         form = CourseAddForm(instance=course)
 
@@ -202,7 +206,7 @@ def course_edit(request, slug):
         request,
         "course/course_add.html",
         {
-            "title": "Edit Course",
+            "title": "Редактировать курс",
             # 'form': form, 'program': pk, 'course': pk
             "form": form,
         },
@@ -215,7 +219,7 @@ def course_delete(request, slug):
     course = Course.objects.get(slug=slug)
     # course_name = course.title
     course.delete()
-    messages.success(request, "Course " + course.title + " has been deleted.")
+    messages.success(request, "Курс " + course.title + " была удалена.")
 
     return redirect("program_detail", pk=course.program.id)
 
@@ -296,7 +300,7 @@ def edit_allocated_course(request, pk):
 def deallocate_course(request, pk):
     course = CourseAllocation.objects.get(pk=pk)
     course.delete()
-    messages.success(request, "successfully deallocate!")
+    messages.success(request, "Успешно освобождено!")
     return redirect("course_allocation_view")
 
 
@@ -341,7 +345,7 @@ def handle_file_edit(request, slug, file_id):
         if form.is_valid():
             form.save()
             messages.success(
-                request, (request.POST.get("title") + " has been updated.")
+                request, (request.POST.get("title") + " была обновлена.")
             )
             return redirect("course_detail", slug=slug)
     else:
@@ -359,7 +363,7 @@ def handle_file_delete(request, slug, file_id):
     # file_name = file.name
     file.delete()
 
-    messages.success(request, (file.title + " has been deleted."))
+    messages.success(request, (file.title + " была удалена."))
     return redirect("course_detail", slug=slug)
 
 
@@ -378,7 +382,7 @@ def handle_video_upload(request, slug):
             obj.save()
 
             messages.success(
-                request, (request.POST.get("title") + " has been uploaded.")
+                request, (request.POST.get("title") + " был загружен.")
             )
             return redirect("course_detail", slug=slug)
     else:
@@ -408,7 +412,7 @@ def handle_video_edit(request, slug, video_slug):
         if form.is_valid():
             form.save()
             messages.success(
-                request, (request.POST.get("title") + " has been updated.")
+                request, (request.POST.get("title") + " был обновлен.")
             )
             return redirect("course_detail", slug=slug)
     else:
@@ -426,7 +430,7 @@ def handle_video_delete(request, slug, video_slug):
     # video = UploadVideo.objects.get(slug=video_slug)
     video.delete()
 
-    messages.success(request, (video.title + " has been deleted."))
+    messages.success(request, (video.title + " был удалён."))
     return redirect("course_detail", slug=slug)
 
 
@@ -439,6 +443,11 @@ def handle_video_delete(request, slug, video_slug):
 @login_required
 @student_required
 def course_registration(request):
+    settings = Settings.objects.first()
+    if settings and not settings.allow_course_modification:
+        messages.error(request, "Добавление курсов заблокировано.")
+        return redirect("course_registration")
+
     if request.method == "POST":
         student = Student.objects.get(student__pk=request.user.id)
         ids = ()
@@ -450,41 +459,40 @@ def course_registration(request):
             course = Course.objects.get(pk=ids[s])
             obj = TakenCourse.objects.create(student=student, course=course)
             obj.save()
-        messages.success(request, "Courses registered successfully!")
+        messages.success(request, "Курсы успешно зарегистрированы!")
         return redirect("course_registration")
     else:
         current_semester = Semester.objects.filter(is_current_semester=True).first()
         if not current_semester:
-            messages.error(request, "No active semester found.")
+            messages.error(request, "Активный семестр не найден.")
             return render(request, "course/course_registration.html")
+        
+        logger.info(f"Текущий семестр: {current_semester}")
 
-        # student = Student.objects.get(student__pk=request.user.id)
         student = get_object_or_404(Student, student__id=request.user.id)
+        logger.info(f"Студент: {student}")
+
         taken_courses = TakenCourse.objects.filter(student__student__id=request.user.id)
         t = ()
         for i in taken_courses:
             t += (i.course.pk,)
 
-        courses = (
-            Course.objects.filter(
-                program__pk=student.program.id,
-                level=student.level,
-                semester=current_semester,
-            )
-            .exclude(id__in=t)
-            .order_by("year")
-        )
-        all_courses = Course.objects.filter(
-            level=student.level, program__pk=student.program.id
-        )
+        logger.info(f"ID пройденных курсов: {t}")
+
+        # Изменения: получение всех курсов без фильтрации
+        courses = Course.objects.all().exclude(id__in=t).order_by("year")
+
+        logger.info(f"Доступные курсы: {courses}")
+
+        all_courses = Course.objects.all()
 
         no_course_is_registered = False  # Check if no course is registered
         all_courses_are_registered = False
 
-        registered_courses = Course.objects.filter(level=student.level).filter(id__in=t)
-        if (
-            registered_courses.count() == 0
-        ):  # Check if number of registered courses is 0
+        registered_courses = Course.objects.filter(id__in=t)
+        logger.info(f"Зарегистрированные курсы: {registered_courses}")
+        
+        if registered_courses.count() == 0:  # Check if number of registered courses is 0
             no_course_is_registered = True
 
         if registered_courses.count() == all_courses.count():
@@ -494,12 +502,13 @@ def course_registration(request):
         total_sec_semester_credit = 0
         total_registered_credit = 0
         for i in courses:
-            if i.semester == "First":
+            if i.semester == "Первый":
                 total_first_semester_credit += int(i.credit)
-            if i.semester == "Second":
+            if i.semester == "Второй":
                 total_sec_semester_credit += int(i.credit)
         for i in registered_courses:
             total_registered_credit += int(i.credit)
+        
         context = {
             "is_calender_on": True,
             "all_courses_are_registered": all_courses_are_registered,
@@ -512,12 +521,20 @@ def course_registration(request):
             "total_registered_credit": total_registered_credit,
             "student": student,
         }
+
+        logger.info(f"Context: {context}")
+        
         return render(request, "course/course_registration.html", context)
 
 
 @login_required
 @student_required
 def course_drop(request):
+    settings = Settings.objects.first()
+    if settings and not settings.allow_course_modification:
+        messages.error(request, "Удаление курсов заблокировано.")
+        return redirect("course_registration")
+
     if request.method == "POST":
         student = Student.objects.get(student__pk=request.user.id)
         ids = ()
@@ -529,12 +546,21 @@ def course_drop(request):
             course = Course.objects.get(pk=ids[s])
             obj = TakenCourse.objects.get(student=student, course=course)
             obj.delete()
-        messages.success(request, "Successfully Dropped!")
+        messages.success(request, "Успешное удаление")
         return redirect("course_registration")
 
 
 # ########################################################
 
+@login_required
+def update_settings(request):
+    if request.method == "POST":
+        allow_course_modification = request.POST.get("allow_course_modification") == "on"
+        settings, created = Settings.objects.get_or_create(id=1)
+        settings.allow_course_modification = allow_course_modification
+        settings.save()
+        messages.success(request, "Настройки обновлены!")
+    return redirect("course_registration")
 
 @login_required
 def user_course_list(request):

@@ -20,15 +20,15 @@ from course.models import Course
 from .utils import *
 
 CHOICE_ORDER_OPTIONS = (
-    ("content", _("Content")),
-    ("random", _("Random")),
-    ("none", _("None")),
+    ("content", _("Содержимое")),
+    ("random", _("Случайный порядок")),
+    ("none", _("Без порядка")),
 )
 
 CATEGORY_OPTIONS = (
-    ("assignment", _("Assignment")),
-    ("exam", _("Exam")),
-    ("practice", _("Practice Quiz")),
+    ("assignment", _("Задание")),
+    ("exam", _("Экзамен")),
+    ("practice", _("Практический тест")),
 )
 
 
@@ -50,19 +50,19 @@ class QuizManager(models.Manager):
 
 class Quiz(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True)
-    title = models.CharField(verbose_name=_("Title"), max_length=60, blank=False)
+    title = models.CharField(verbose_name=_("Название"), max_length=60, blank=False)
     slug = models.SlugField(blank=True, unique=True)
     description = models.TextField(
-        verbose_name=_("Description"),
+        verbose_name=_("Описание"),
         blank=True,
-        help_text=_("A detailed description of the quiz"),
+        help_text=_("Подробное описание викторины"),
     )
     category = models.TextField(choices=CATEGORY_OPTIONS, blank=True)
     random_order = models.BooleanField(
         blank=False,
         default=False,
-        verbose_name=_("Random Order"),
-        help_text=_("Display the questions in a random order or as they are set?"),
+        verbose_name=_("Случайный порядок"),
+        help_text=_("Показывать вопросы в случайном порядке или в том порядке, в котором они установлены?"),
     )
 
     # max_questions = models.PositiveIntegerField(blank=True, null=True, verbose_name=_("Max Questions"),
@@ -71,42 +71,42 @@ class Quiz(models.Model):
     answers_at_end = models.BooleanField(
         blank=False,
         default=False,
-        verbose_name=_("Answers at end"),
+        verbose_name=_("Ответы в конце"),
         help_text=_(
-            "Correct answer is NOT shown after question. Answers displayed at the end."
+            "Правильный ответ не показывается после вопроса. Ответы отображаются в конце."
         ),
     )
 
     exam_paper = models.BooleanField(
         blank=False,
         default=False,
-        verbose_name=_("Exam Paper"),
+        verbose_name=_("Экзаменационный режим"),
         help_text=_(
-            "If yes, the result of each attempt by a user will be stored. Necessary for marking."
+            "Если да, результат каждой попытки пользователя будет сохраняться. Это необходимо для оценки."
         ),
     )
 
     single_attempt = models.BooleanField(
         blank=False,
         default=False,
-        verbose_name=_("Single Attempt"),
-        help_text=_("If yes, only one attempt by a user will be permitted."),
+        verbose_name=_("Одна попытка"),
+        help_text=_("Если да, пользователю будет разрешена только одна попытка."),
     )
 
     pass_mark = models.SmallIntegerField(
         blank=True,
         default=50,
-        verbose_name=_("Pass Mark"),
+        verbose_name=_("Проходной балл"),
         validators=[MaxValueValidator(100)],
-        help_text=_("Percentage required to pass exam."),
+        help_text=_("Процент, необходимый для сдачи экзамена."),
     )
 
     draft = models.BooleanField(
         blank=True,
         default=False,
-        verbose_name=_("Draft"),
+        verbose_name=_("Черновик"),
         help_text=_(
-            "If yes, the quiz is not displayed in the quiz list and can only be taken by users who can edit quizzes."
+            "Если да, викторина не отображается в списке викторин и может быть пройдена только пользователями, которые могут редактировать викторины."
         ),
     )
 
@@ -119,15 +119,15 @@ class Quiz(models.Model):
             self.exam_paper = True
 
         if self.pass_mark > 100:
-            raise ValidationError("%s is above 100" % self.pass_mark)
+            raise ValidationError("%s равно или превышает 100" % self.pass_mark)
         if self.pass_mark < 0:
-            raise ValidationError("%s is below 0" % self.pass_mark)
+            raise ValidationError("%s равно или меньше 0" % self.pass_mark)
 
         super(Quiz, self).save(force_insert, force_update, *args, **kwargs)
 
     class Meta:
-        verbose_name = _("Quiz")
-        verbose_name_plural = _("Quizzes")
+        verbose_name = _("Викторина")
+        verbose_name_plural = _("Викторины")
 
     def __str__(self):
         return self.title
@@ -161,19 +161,19 @@ class ProgressManager(models.Manager):
 
 class Progress(models.Model):
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, verbose_name=_("User"), on_delete=models.CASCADE
+        settings.AUTH_USER_MODEL, verbose_name=_("Пользователь"), on_delete=models.CASCADE
     )
     score = models.CharField(
         max_length=1024,
-        verbose_name=_("Score"),
+        verbose_name=_("Баллы"),
         validators=[validate_comma_separated_integer_list],
     )
 
     objects = ProgressManager()
 
     class Meta:
-        verbose_name = _("User Progress")
-        verbose_name_plural = _("User progress records")
+        verbose_name = _("Прогресс пользователя")
+        verbose_name_plural = _("Записи о прогрессе пользователей")
 
     # @property
     def list_all_cat_scores(self):
@@ -200,7 +200,7 @@ class Progress(models.Model):
                 ]
             ]
         ):
-            return _("error"), _("category does not exist or invalid score")
+            return _("error"), _("Категория не существует или неверный балл")
 
         to_find = re.escape(str(question.quiz)) + r",(?P<score>\d+),(?P<possible>\d+),"
 
@@ -245,7 +245,7 @@ class SittingManager(models.Manager):
 
         if len(question_set) == 0:
             raise ImproperlyConfigured(
-                "Question set of the quiz is empty. Please configure questions properly"
+                "Набор вопросов викторины пуст. Пожалуйста, правильно настройте вопросы."
             )
 
         # if quiz.max_questions and quiz.max_questions < len(question_set):
@@ -285,46 +285,46 @@ class SittingManager(models.Manager):
 
 class Sitting(models.Model):
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, verbose_name=_("User"), on_delete=models.CASCADE
+        settings.AUTH_USER_MODEL, verbose_name=_("Пользователь"), on_delete=models.CASCADE
     )
-    quiz = models.ForeignKey(Quiz, verbose_name=_("Quiz"), on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, verbose_name=_("Викторина"), on_delete=models.CASCADE)
     course = models.ForeignKey(
-        Course, null=True, verbose_name=_("Course"), on_delete=models.CASCADE
+        Course, null=True, verbose_name=_("Курс"), on_delete=models.CASCADE
     )
 
     question_order = models.CharField(
         max_length=1024,
-        verbose_name=_("Question Order"),
+        verbose_name=_("Порядок вопросов"),
         validators=[validate_comma_separated_integer_list],
     )
 
     question_list = models.CharField(
         max_length=1024,
-        verbose_name=_("Question List"),
+        verbose_name=_("Список вопросов"),
         validators=[validate_comma_separated_integer_list],
     )
 
     incorrect_questions = models.CharField(
         max_length=1024,
         blank=True,
-        verbose_name=_("Incorrect questions"),
+        verbose_name=_("Неправильные вопросы"),
         validators=[validate_comma_separated_integer_list],
     )
 
-    current_score = models.IntegerField(verbose_name=_("Current Score"))
+    current_score = models.IntegerField(verbose_name=_("Текущий балл"))
     complete = models.BooleanField(
-        default=False, blank=False, verbose_name=_("Complete")
+        default=False, blank=False, verbose_name=_("Завершено")
     )
     user_answers = models.TextField(
-        blank=True, default="{}", verbose_name=_("User Answers")
+        blank=True, default="{}", verbose_name=_("Ответы пользователя")
     )
-    start = models.DateTimeField(auto_now_add=True, verbose_name=_("Start"))
-    end = models.DateTimeField(null=True, blank=True, verbose_name=_("End"))
+    start = models.DateTimeField(auto_now_add=True, verbose_name=_("Начать"))
+    end = models.DateTimeField(null=True, blank=True, verbose_name=_("Завершить"))
 
     objects = SittingManager()
 
     class Meta:
-        permissions = (("view_sittings", _("Can see completed exams.")),)
+        permissions = (("view_sittings", _("Может видеть завершенные экзамены.")),)
 
     def get_first_question(self):
         if not self.question_list:
@@ -401,9 +401,9 @@ class Sitting(models.Model):
     @property
     def result_message(self):
         if self.check_if_passed:
-            return f"You have passed this quiz, congratulation"
+            return f"Вы прошли эту викторину, поздравляем!"
         else:
-            return f"You failed this quiz, give it one chance again."
+            return f"Вы не сдали эту викторину, дайте ей еще один шанс."
 
     def add_user_answer(self, question, guess):
         current = json.loads(self.user_answers)
@@ -440,32 +440,32 @@ class Sitting(models.Model):
 
 
 class Question(models.Model):
-    quiz = models.ManyToManyField(Quiz, verbose_name=_("Quiz"), blank=True)
+    quiz = models.ManyToManyField(Quiz, verbose_name=_("Викторина"), blank=True)
     figure = models.ImageField(
         upload_to="uploads/%Y/%m/%d",
         blank=True,
         null=True,
         verbose_name=_("Figure"),
-        help_text=_("Add an image for the question if it's necessary."),
+        help_text=_("Добавьте изображение к вопросу, если это необходимо."),
     )
     content = models.CharField(
         max_length=1000,
         blank=False,
-        help_text=_("Enter the question text that you want displayed"),
-        verbose_name=_("Question"),
+        help_text=_("Введите текст вопроса, который вы хотите отобразить"),
+        verbose_name=_("Вопрос"),
     )
     explanation = models.TextField(
         max_length=2000,
         blank=True,
-        help_text=_("Explanation to be shown after the question has been answered."),
-        verbose_name=_("Explanation"),
+        help_text=_("Объяснение, которое будет показано после ответа на вопрос."),
+        verbose_name=_("Объяснение"),
     )
 
     objects = InheritanceManager()
 
     class Meta:
-        verbose_name = _("Question")
-        verbose_name_plural = _("Questions")
+        verbose_name = _("Вопрос")
+        verbose_name_plural = _("Вопросы")
 
     def __str__(self):
         return self.content
@@ -478,9 +478,9 @@ class MCQuestion(Question):
         blank=True,
         choices=CHOICE_ORDER_OPTIONS,
         help_text=_(
-            "The order in which multichoice choice options are displayed to the user"
+            "Порядок, в котором варианты выбора отображаются пользователю."
         ),
-        verbose_name=_("Choice Order"),
+        verbose_name=_("Порядок выбора"),
     )
 
     def check_if_correct(self, guess):
@@ -513,35 +513,35 @@ class MCQuestion(Question):
         return Choice.objects.get(id=guess).choice
 
     class Meta:
-        verbose_name = _("Multiple Choice Question")
-        verbose_name_plural = _("Multiple Choice Questions")
+        verbose_name = _("Вопрос с множеством вариантов ответа")
+        verbose_name_plural = _("Вопросы с множеством вариантов ответа")
 
 
 class Choice(models.Model):
     question = models.ForeignKey(
-        MCQuestion, verbose_name=_("Question"), on_delete=models.CASCADE
+        MCQuestion, verbose_name=_("Вопрос"), on_delete=models.CASCADE
     )
 
     choice = models.CharField(
         max_length=1000,
         blank=False,
-        help_text=_("Enter the choice text that you want displayed"),
-        verbose_name=_("Content"),
+        help_text=_("Введите текст варианта ответа, который вы хотите отобразить"),
+        verbose_name=_("Содержание"),
     )
 
     correct = models.BooleanField(
         blank=False,
         default=False,
-        help_text=_("Is this a correct answer?"),
-        verbose_name=_("Correct"),
+        help_text=_("Это правильный ответ?"),
+        verbose_name=_("Правильный"),
     )
 
     def __str__(self):
         return self.choice
 
     class Meta:
-        verbose_name = _("Choice")
-        verbose_name_plural = _("Choices")
+        verbose_name = _("Выбор")
+        verbose_name_plural = _("Варианты")
 
 
 class EssayQuestion(Question):
@@ -561,5 +561,5 @@ class EssayQuestion(Question):
         return self.content
 
     class Meta:
-        verbose_name = _("Essay style question")
-        verbose_name_plural = _("Essay style questions")
+        verbose_name = _("Вопрос на эссе")
+        verbose_name_plural = _("Вопросы на эссе")

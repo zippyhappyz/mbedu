@@ -6,9 +6,9 @@
 
 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="/">Главная</a></li>
         <li class="breadcrumb-item"><a href="{{ course.get_absolute_url }}">{{ course }}</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Manage Score</li>
+        <li class="breadcrumb-item active" aria-current="page">Управление баллами</li>
     </ol>
 </nav>
 
@@ -20,7 +20,7 @@
         {% for course in courses %}
             <a class="dropdown-item" href="{% url 'add_score_for' course.id %}" title="{{ course.code }}">{{ course.title }}</a>
         {% empty %}
-            <p class="dropdown-item">No course.</p>
+            <p class="dropdown-item">Нет курса.</p>
         {% endfor %}
     </div>
 </div>
@@ -34,10 +34,10 @@
 <form action="" method="POST">
     {% csrf_token %}
     <div class="btn-flex">
-        <button title="Save Score" type="submit" class="btn btn-primary">Save</button>
+        <button title="Save Score" type="submit" class="btn btn-primary">Сохранить</button>
         <a target="_blank" href="{% url 'result_sheet_pdf_view' id=course.id %}">
             <span data-toggle="tooltip" title="Print Result sheet" class="btn btn-warning">
-                <i class="far fa-file-pdf"></i> Grade report
+                <i class="far fa-file-pdf"></i> Отчет об оценках
             </span>
         </a>
     </div>
@@ -48,16 +48,16 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Student</th>
-                    <th>Assignment</th>
-                    <th>Mid exam</th>
-                    <th>Quiz</th>
-                    <th>Attendance</th>
-                    <th>Final exam</th>
-                    <th>Total</th>
-                    <th>Point</th>
-                    <th>Grade</th>
-                    <th>Comment</th>
+                    <th>Студент</th>
+                    <th>Задание</th>
+                    <th>Рубежный контроль</th>
+                    <th>Квиз</th>
+                    <th>Посещаемость</th>
+                    <th>Финальный экзамен</th>
+                    <th>Итого</th>
+                    <th>Баллы</th>
+                    <th>Оценка</th>
+                    <th>Комментарий</th>
                 </tr>
             </thead>
             <tbody>
@@ -101,7 +101,7 @@
                     <td></td>
                     <td>
                         <span class="text-danger">
-                            No Student.
+                            Нет студентов.
                         </span>
                     </td>
                     <td></td>

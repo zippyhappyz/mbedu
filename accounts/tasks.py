@@ -1,6 +1,18 @@
 from celery import shared_task
 from django.contrib.auth import get_user_model
-from core.utils import send_html_email
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
+
+def send_html_email(subject, recipient_list, template, context):
+    html_content = render_to_string(template, context)
+    text_content = strip_tags(html_content)
+    email = EmailMultiAlternatives(
+        subject, text_content, 'askarjan.15.14@gmail.com', recipient_list
+    )
+    email.attach_alternative(html_content, "text/html")
+    email.send()
 
 
 @shared_task

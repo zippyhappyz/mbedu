@@ -9,8 +9,8 @@
 
 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
 	<ol class="breadcrumb">
-		<li class="breadcrumb-item"><a href="/">Home</a></li>
-		<li class="breadcrumb-item"><a href="{% url 'programs' %}">Programs</a></li>
+		<li class="breadcrumb-item"><a href="/">Главная</a></li>
+		<li class="breadcrumb-item"><a href="{% url 'programs' %}">Программы</a></li>
 		<li class="breadcrumb-item"><a href="{% url 'program_detail' course.program.id %}">{{ course.program }}</a></li>
 		<li class="breadcrumb-item"><a href="{{ course.get_absolute_url }}">{{ course }}</a></li>
 		<li class="breadcrumb-item"><a href="{% url 'quiz_index' course.slug %}">Quizzes</a></li>
@@ -109,11 +109,11 @@
 			  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				You can't go back to the previous question after you submit it, 
-				so double check your answer before proceeding to the next one!
+				Вы не можете вернуться к предыдущему вопросу после его отправки, 
+				поэтому дважды проверьте свой ответ, прежде чем переходить к следующему!
 			</div>
 			<div class="modal-footer">
-			  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Understood</button>
+			  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Понятно</button>
 			</div>
 		  </div>
 		</div>
